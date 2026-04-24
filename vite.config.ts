@@ -14,9 +14,7 @@ export default defineConfig({
 
   build: {
     rollupOptions: {
-      external: [
-        '@tauri-apps/api/core'
-      ]
+      external: ['@tauri-apps/api/core']
     }
   }
 })
