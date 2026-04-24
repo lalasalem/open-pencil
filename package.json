@@ -44,7 +44,8 @@
     "@ai-sdk/anthropic": "latest",
     "@ai-sdk/openai": "latest",
     "@ai-sdk/google": "latest",
-    "@ai-sdk/mistral": "latest"
+    "@ai-sdk/mistral": "latest",
+    "@openrouter/ai-sdk-provider": "latest"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.4",
