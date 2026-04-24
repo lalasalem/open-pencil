@@ -45,7 +45,8 @@
     "@ai-sdk/openai": "latest",
     "@ai-sdk/google": "latest",
     "@ai-sdk/mistral": "latest",
-    "@openrouter/ai-sdk-provider": "latest"
+    "@openrouter/ai-sdk-provider": "latest",
+    "prismjs": "latest"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.4",
@@ -53,6 +54,7 @@
     "unplugin-icons": "^0.22.0",
     "@iconify-json/lucide": "latest",
     "typescript": "^5.0.0",
+    "@types/prismjs": "latest",
     "vite": "^6.0.0"
   }
 }
