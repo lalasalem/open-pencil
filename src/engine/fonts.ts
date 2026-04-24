@@ -13,16 +13,28 @@ interface TauriFontFamily {
 let tauriFontsCache: TauriFontFamily[] | null = null
 let tauriFontsPromise: Promise<TauriFontFamily[]> | null = null
 
+async function getTauriInvoke(): Promise<any | null> {
+  if (!IS_TAURI) return null
+
+  try {
+    const mod = await import('@tauri-apps/api/core')
+    return mod.invoke
+  } catch {
+    return null
+  }
+}
+
 async function getTauriFonts(): Promise<TauriFontFamily[]> {
-  // 🚨 DISABLED FOR WEB DEPLOY (Render has no Tauri runtime)
   if (!IS_TAURI) return []
 
   if (tauriFontsCache) return tauriFontsCache
 
   if (!tauriFontsPromise) {
     tauriFontsPromise = (async () => {
+      const invoke = await getTauriInvoke()
+      if (!invoke) return []
+
       try {
-        const { invoke } = await import('@tauri-apps/api/core')
         const fonts = await invoke<TauriFontFamily[]>('list_system_fonts')
         tauriFontsCache = fonts
         return fonts
@@ -36,9 +48,7 @@ async function getTauriFonts(): Promise<TauriFontFamily[]> {
 }
 
 export function preloadFonts(): void {
-  // Web build: do nothing
   if (!IS_TAURI) return
-
   void getTauriFonts().then(registerFontFaces)
 }
 
@@ -76,13 +86,13 @@ export async function loadFont(
   family: string,
   style = 'Regular'
 ): Promise<ArrayBuffer | null> {
-  // 🚨 WEB SAFE FALLBACK
   if (!IS_TAURI) {
     return loadFontCore(family, style)
   }
 
   try {
-    const { invoke } = await import('@tauri-apps/api/core')
+    const invoke = await getTauriInvoke()
+    if (!invoke) return loadFontCore(family, style)
 
     const data = await invoke<number[]>('load_system_font', {
       family,
