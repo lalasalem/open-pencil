@@ -2,7 +2,7 @@ import { createHead } from '@unhead/vue/client'
 import { createApp } from 'vue'
 
 import './app.css'
-import { IS_TAURI } from '@/constants'
+import { IS_TAURI } from './constants' // FIXED PATH (no @ alias issue)
 import { preloadFonts } from '@/engine/fonts'
 
 import App from './App.vue'
@@ -15,14 +15,15 @@ const head = createHead()
 
 app.use(router).use(head).mount('#app')
 
-// SAFE PWA (disabled if missing)
-if (!IS_TAURI) {
-  ;(async () => {
-    try {
-      const mod = await import('virtual:pwa-register')
-      mod.registerSW?.({ immediate: true })
-    } catch {
-      console.log('[PWA disabled]')
+// ✅ SAFE PWA (WILL NOT BREAK BUILD)
+if (!IS_TAURI && import.meta.env.PROD) {
+  // only try in production AND only if plugin exists
+  try {
+    const registerSW = (window as any).__PWA_REGISTER_SW__
+    if (registerSW) {
+      registerSW({ immediate: true })
     }
-  })()
+  } catch {
+    console.warn('PWA disabled')
+  }
 }
