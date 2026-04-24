@@ -19,17 +19,14 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
-      // THIS IS THE FIX: Redirecting the trystero import to a compatible version
-      'trystero/mqtt': 'trystero/dist/trystero-mqtt.min.js',
+      // Point to the local file we created in the build command
+      'trystero/mqtt': resolve(__dirname, './trystero-fix.js'),
       'node:fs/promises': resolve(__dirname, 'empty-module.js'),
       'node:url': resolve(__dirname, 'empty-module.js'),
       'fs': resolve(__dirname, 'empty-module.js'),
       'url': resolve(__dirname, 'empty-module.js'),
       'path': 'path-browserify',
     },
-  },
-  optimizeDeps: {
-    include: ['@unhead/vue', 'vue', 'vue-router']
   },
   build: {
     outDir: 'dist',
