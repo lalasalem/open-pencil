@@ -1,8 +1,8 @@
-import { createHead } from '@unhead/vue/client'
+import { createHead } from '@unhead/vue'
 import { createApp } from 'vue'
 
 import './app.css'
-import { IS_TAURI } from './constants' // FIXED PATH (no @ alias issue)
+import { IS_TAURI } from './constants' 
 import { preloadFonts } from '@/engine/fonts'
 
 import App from './App.vue'
