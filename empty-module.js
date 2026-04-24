@@ -1,3 +1,2 @@
-export const promises = {};
-export const exports = {};
 export default {};
+export const promises = {};
