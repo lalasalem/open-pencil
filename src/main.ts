@@ -15,14 +15,14 @@ const head = createHead()
 
 app.use(router).use(head).mount('#app')
 
-// FIXED PWA LOADER (safe for Render builds)
+// SAFE PWA (disabled if missing)
 if (!IS_TAURI) {
   ;(async () => {
     try {
-      const { registerSW } = await import('virtual:pwa-register')
-      registerSW({ immediate: true })
+      const mod = await import('virtual:pwa-register')
+      mod.registerSW?.({ immediate: true })
     } catch {
-      console.warn('[PWA] not available during build')
+      console.log('[PWA disabled]')
     }
   })()
 }
