@@ -26,10 +26,16 @@ export default defineConfig({
       'path': 'path-browserify',
     },
   },
+  optimizeDeps: {
+    // This ensures dependencies are also treated as modern JS
+    target: 'esnext',
+    include: ['@unhead/vue', 'vue', 'vue-router']
+  },
   build: {
     outDir: 'dist',
+    // THIS IS THE KEY FIX: Target modern browsers to allow top-level await
+    target: 'esnext',
     rollupOptions: {
-      // THIS IS THE FIX: We tell Vite "Don't look for these locally, I'll handle it"
       external: [
         'trystero/mqtt',
         /.*export-worker.*/,
