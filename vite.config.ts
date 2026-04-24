@@ -1,18 +1,21 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import path from 'path'
 
 export default defineConfig({
   plugins: [vue()],
 
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': '/src',
 
-      // keep existing shims (safe)
-      '@tauri-apps/api/core': path.resolve(__dirname, './src/shims/tauri.ts'),
-      'reka-ui': path.resolve(__dirname, './src/shims/reka-ui.ts'),
-      'canvaskit-wasm': path.resolve(__dirname, './src/shims/canvaskit.ts')
+      // existing fixes
+      '@tauri-apps/api/core': '/src/shims/tauri.ts',
+      'reka-ui': '/src/shims/reka-ui.ts',
+      'canvaskit-wasm': '/src/shims/canvaskit.ts',
+
+      // 🚨 CRITICAL FIX
+      '@open-pencil/core/dist/io/formats/fig/export-worker.ts':
+        '/src/shims/export-worker.ts'
     }
   },
 
@@ -20,12 +23,8 @@ export default defineConfig({
     rollupOptions: {
       external: [
         '@tauri-apps/api/core',
-        'canvaskit-wasm'
+        'virtual:pwa-register'
       ]
     }
-  },
-
-  define: {
-    __TAURI__: false
   }
 })
