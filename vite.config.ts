@@ -20,20 +20,17 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    // FIX: esnext allows the "await" keyword that was crashing the build
-    target: 'esnext', 
-    cssCodeSplit: true,
+    // ES2015 is the most compatible setting for restricted browsers
+    target: 'es2015', 
+    minify: 'terser', // Terser is slower to build but easier for old browsers to run
     chunkSizeWarningLimit: 10000,
     rollupOptions: {
       external: ['trystero/mqtt', /^@tauri-apps\/.*/],
       output: {
         globals: { 'trystero/mqtt': 'trystero' },
-        // FIX: Simplified chunking to avoid the "Circular chunk" errors
+        // BREAKING EVERYTHING INTO TINY PIECES
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('@open-pencil') || id.includes('canvaskit')) {
-              return 'editor-core';
-            }
             return 'vendor';
           }
         }
