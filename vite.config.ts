@@ -22,11 +22,13 @@ export default defineConfig({
     outDir: 'dist',
     target: 'esnext',
     minify: 'esbuild',
-    // FIX: Ensures small assets are embedded to avoid 404 errors on restricted networks
-    assetsInlineLimit: 4096, 
+    // FIX: This ensures the build doesn't use "modern" script types 
+    // that school/work filters often block
+    assetsInlineLimit: 100000000, 
     rollupOptions: {
       external: ['trystero/mqtt', /^@tauri-apps\/.*/],
       output: {
+        format: 'iife', // "Immediately Invoked Function Expression" - very compatible
         globals: { 'trystero/mqtt': 'trystero' }
       }
     }
