@@ -11,7 +11,6 @@ export default defineConfig({
   define: {
     'process.env': {},
     'global': 'window',
-    'process.browser': true
   },
   resolve: {
     alias: {
@@ -21,9 +20,10 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    target: 'esnext', // Required for Yoga/Canvas engine
-    minify: 'esbuild', // Faster and sometimes safer for Chromebooks than Terser
-    chunkSizeWarningLimit: 10000,
+    target: 'esnext',
+    minify: 'esbuild',
+    // FIX: Ensures small assets are embedded to avoid 404 errors on restricted networks
+    assetsInlineLimit: 4096, 
     rollupOptions: {
       external: ['trystero/mqtt', /^@tauri-apps\/.*/],
       output: {
