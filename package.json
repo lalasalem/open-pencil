@@ -42,6 +42,8 @@
     "zod": "latest",
     "valibot": "latest",
     "@ai-sdk/valibot": "latest",
+    "@agentclientprotocol/sdk": "latest",
+    "@modelcontextprotocol/sdk": "latest",
     "nanoid": "latest",
     "@ai-sdk/anthropic": "latest",
     "@ai-sdk/openai": "latest",
