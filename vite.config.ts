@@ -11,10 +11,7 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      // This fixes the "@/engine/fonts" error
       '@': resolve(__dirname, './src'),
-      
-      // These fix the Node.js browser compatibility errors
       'node:fs/promises': resolve(__dirname, 'empty-module.js'),
       'node:url': resolve(__dirname, 'empty-module.js'),
       'fs': resolve(__dirname, 'empty-module.js'),
@@ -22,10 +19,12 @@ export default defineConfig({
       'path': 'path-browserify',
     },
   },
+  optimizeDeps: {
+    include: ['@unhead/vue']
+  },
   build: {
     outDir: 'dist',
     rollupOptions: {
-      // This prevents the worker resolution error
       external: [
         /.*export-worker\.ts/ 
       ],
