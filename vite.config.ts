@@ -19,6 +19,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
+      // THIS IS THE FIX: Redirecting the trystero import to a compatible version
+      'trystero/mqtt': 'trystero/dist/trystero-mqtt.min.js',
       'node:fs/promises': resolve(__dirname, 'empty-module.js'),
       'node:url': resolve(__dirname, 'empty-module.js'),
       'fs': resolve(__dirname, 'empty-module.js'),
