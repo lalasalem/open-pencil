@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import Icons from 'unplugin-icons/vite';
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -8,7 +9,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    Icons({
+      compiler: 'vue3',
+      autoInstall: true
+    })
+  ],
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
@@ -25,7 +32,6 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     rollupOptions: {
-      // BROAD WILDCARD: This ignores every desktop-only Tauri plugin automatically
       external: [
         /.*export-worker.*/,
         /.*fig-parse-worker.*/,
