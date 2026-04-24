@@ -8,7 +8,6 @@ export default defineConfig({
     vue(),
     Icons({ compiler: 'vue3', autoInstall: true })
   ],
-  // FIX: Force define these so they are never "undefined" in the browser
   define: {
     'process.env': {},
     'global': 'window',
@@ -22,15 +21,19 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    target: 'es2020', // Most stable for ChromeOS
+    // MUST be esnext to allow the Yoga Layout await
+    target: 'esnext', 
     minify: 'terser',
+    chunkSizeWarningLimit: 10000,
     rollupOptions: {
       external: ['trystero/mqtt', /^@tauri-apps\/.*/],
       output: {
         globals: { 'trystero/mqtt': 'trystero' },
-        // Simple chunking to prevent memory overload
-        manualChunks: {
-          'vendor': ['vue', 'vue-router', '@vueuse/core'],
+        // Smaller chunks help restricted Chromebooks load without crashing
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
         }
       }
     }
