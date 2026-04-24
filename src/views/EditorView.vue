@@ -61,12 +61,16 @@ onMounted(async () => {
   try {
     const mcp = await spawnMCPIfNeeded()
     mcpCleanup.value = mcp?.disconnect ?? null
+
     const isTauri = IS_BROWSER && '__TAURI_INTERNALS__' in window
+
     if (import.meta.env.DEV || isTauri) {
-      automationCleanup.value = connectAutomation(getActiveStore, mcp?.authToken ?? null).disconnect
+      automationCleanup.value =
+        connectAutomation(getActiveStore, mcp?.authToken ?? null).disconnect
     }
   } catch (e) {
     console.warn('[MCP]', e)
+
     if (IS_BROWSER && '__TAURI_INTERNALS__' in window) {
       const { toast } = await import('@/utils/toast')
       toast.warning('MCP server failed to start. Install with: npm i -g @open-pencil/mcp')
@@ -140,6 +144,7 @@ onUnmounted(() => {
           class="absolute top-7 left-7 z-10 flex items-center gap-2 rounded-lg border border-border bg-panel px-2 py-1 shadow-sm"
         >
           <img src="/favicon-32.png" class="size-4" alt="OpenPencil" />
+
           <span class="text-xs text-surface">
             {{ store.state.documentName }}
           </span>
@@ -149,8 +154,8 @@ onUnmounted(() => {
             title="Show UI (⌘\)"
             @click="store.state.showUI = true"
           >
-            <!-- FIXED ICON -->
-            <icon-lucide-menu class="size-3.5" />
+            <!-- FIX: safe icon fallback -->
+            <span class="text-sm leading-none">☰</span>
           </button>
         </div>
       </div>
