@@ -54,7 +54,14 @@ export {
   COMPONENT_LABEL_ICON_SIZE,
   COMPONENT_LABEL_ICON_GAP,
   RULER_TARGET_PIXEL_SPACING,
-  RULER_MAJOR_TOLERANCE
+  RULER_MAJOR_TOLERANCE,
+  DEFAULT_SHAPE_FILL,
+  DEFAULT_FRAME_FILL,
+  SECTION_DEFAULT_FILL,
+  SECTION_DEFAULT_STROKE,
+  ZOOM_DIVISOR,
+  ZOOM_SCALE_MIN,
+  ZOOM_SCALE_MAX
 } from '@open-pencil/core'
 
 import type { Color } from '@open-pencil/core'
@@ -83,16 +90,6 @@ export const YJS_JSON_FIELDS = new Set([
   'boundVariables',
   'styleRuns'
 ])
-
-export {
-  DEFAULT_SHAPE_FILL,
-  DEFAULT_FRAME_FILL,
-  SECTION_DEFAULT_FILL,
-  SECTION_DEFAULT_STROKE,
-  ZOOM_DIVISOR,
-  ZOOM_SCALE_MIN,
-  ZOOM_SCALE_MAX
-} from '@open-pencil/core'
 
 export const HANDLE_SIZE = 6
 
