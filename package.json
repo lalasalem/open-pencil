@@ -29,7 +29,9 @@
     "@tanstack/vue-table": "latest",
     "clsx": "latest",
     "tailwind-merge": "latest",
-    "trystero": "latest"
+    "trystero": "latest",
+    "yjs": "latest",
+    "y-indexeddb": "latest"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.4",
