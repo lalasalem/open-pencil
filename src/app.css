@@ -1,5 +1,6 @@
 @import 'tailwindcss';
-@import 'tw-animate-css';
+
+/* removed: @import 'tw-animate-css'; (caused build failure on Render) */
 
 @utility scrollbar-none {
   -ms-overflow-style: none;
