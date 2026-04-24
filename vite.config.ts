@@ -1,34 +1,30 @@
 import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue'; // Assuming it's a Vue app based on the repo name
+import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      // This fixes the "node:fs/promises" error by telling Vite 
-      // to ignore Node-only modules in the browser
-      'node:fs/promises': 'empty-module',
-      'node:url': 'empty-module',
-      'fs': 'empty-module',
+      // This tells Vite to use our new file whenever the app asks for Node modules
+      'node:fs/promises': resolve(__dirname, 'empty-module.js'),
+      'node:url': resolve(__dirname, 'empty-module.js'),
+      'fs': resolve(__dirname, 'empty-module.js'),
+      'url': resolve(__dirname, 'empty-module.js'),
       'path': 'path-browserify',
     },
   },
   build: {
+    outDir: 'dist',
     rollupOptions: {
-      // This helps Rollup ignore the missing .ts worker file 
-      // if it's being incorrectly referenced by a dependency
+      // This prevents the "Could not resolve entry module" error for the .ts worker
       external: [
         /.*export-worker\.ts/ 
       ],
-      output: {
-        manualChunks: {
-          vendor: ['vue', '@open-pencil/core'],
-        },
-      },
     },
   },
-  // This ensures that workers are bundled correctly as pointers
+  // Set the base to './' to ensure paths work correctly on Render's static hosting
+  base: './',
   worker: {
     format: 'es',
   }
