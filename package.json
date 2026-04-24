@@ -38,8 +38,12 @@
     "motion-v": "latest",
     "framer-motion": "latest",
     "ai": "latest",
+    "zod": "latest",
+    "nanoid": "latest",
     "@ai-sdk/anthropic": "latest",
-    "@ai-sdk/openai": "latest"
+    "@ai-sdk/openai": "latest",
+    "@ai-sdk/google": "latest",
+    "@ai-sdk/mistral": "latest"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.4",
