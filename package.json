@@ -32,7 +32,9 @@
     "trystero": "latest",
     "yjs": "latest",
     "y-indexeddb": "latest",
-    "y-protocols": "latest"
+    "y-protocols": "latest",
+    "motion-v": "latest",
+    "framer-motion": "latest"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.4",
