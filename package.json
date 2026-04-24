@@ -48,6 +48,7 @@
     "@modelcontextprotocol/sdk": "latest",
     "nanoid": "latest",
     "@ai-sdk/anthropic": "latest",
+    "@ai-sdk/openai": "latest",
     "@ai-sdk/google": "latest",
     "@ai-sdk/mistral": "latest",
     "@openrouter/ai-sdk-provider": "latest",
