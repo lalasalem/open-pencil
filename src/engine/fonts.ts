@@ -5,59 +5,44 @@ import {
   styleToWeight
 } from '@open-pencil/core'
 
-interface TauriFontFamily {
+interface FontFamily {
   family: string
   styles: string[]
 }
 
-let tauriFontsCache: TauriFontFamily[] | null = null
-let tauriFontsPromise: Promise<TauriFontFamily[]> | null = null
+// -------------------------
+// WEB SAFE MODE (Render)
+// -------------------------
 
-async function getTauriInvoke(): Promise<any | null> {
-  if (!IS_TAURI) return null
+let cachedFonts: FontFamily[] = []
 
-  try {
-    const mod = await import('@tauri-apps/api/core')
-    return mod.invoke
-  } catch {
-    return null
-  }
-}
-
-async function getTauriFonts(): Promise<TauriFontFamily[]> {
+async function getTauriFonts(): Promise<FontFamily[]> {
+  // 🚨 NEVER import Tauri on web build
   if (!IS_TAURI) return []
 
-  if (tauriFontsCache) return tauriFontsCache
-
-  if (!tauriFontsPromise) {
-    tauriFontsPromise = (async () => {
-      const invoke = await getTauriInvoke()
-      if (!invoke) return []
-
-      try {
-        const fonts = await invoke<TauriFontFamily[]>('list_system_fonts')
-        tauriFontsCache = fonts
-        return fonts
-      } catch {
-        return []
-      }
-    })()
+  try {
+    const { invoke } = await import('@tauri-apps/api/core')
+    return await invoke<FontFamily[]>('list_system_fonts')
+  } catch {
+    return []
   }
-
-  return tauriFontsPromise
 }
 
 export function preloadFonts(): void {
   if (!IS_TAURI) return
-  void getTauriFonts().then(registerFontFaces)
+
+  void getTauriFonts().then((fonts) => {
+    cachedFonts = fonts
+    registerFonts(fonts)
+  })
 }
 
-function registerFontFaces(fonts: TauriFontFamily[]): void {
+function registerFonts(fonts: FontFamily[]): void {
   if (typeof document === 'undefined') return
 
-  for (const { family } of fonts) {
+  for (const font of fonts) {
     try {
-      const face = new FontFace(family, `local("${family}")`)
+      const face = new FontFace(font.family, `local("${font.family}")`)
       document.fonts.add(face)
     } catch {
       // ignore
@@ -66,33 +51,36 @@ function registerFontFaces(fonts: TauriFontFamily[]): void {
 }
 
 export async function listFamilies(): Promise<string[]> {
-  if (IS_TAURI) {
-    const fonts = await getTauriFonts()
-    return fonts.map((f) => f.family)
+  if (!IS_TAURI) {
+    const { listFamilies: coreList } = await import('@open-pencil/core')
+    return coreList()
   }
 
-  const { listFamilies: coreList } = await import('@open-pencil/core')
-  return coreList()
+  const fonts = await getTauriFonts()
+  return fonts.map((f) => f.family)
 }
 
-export async function listFonts(): Promise<TauriFontFamily[]> {
-  if (IS_TAURI) {
-    return getTauriFonts()
-  }
-  return []
+export async function listFonts(): Promise<FontFamily[]> {
+  if (!IS_TAURI) return []
+  return getTauriFonts()
 }
 
 export async function loadFont(
   family: string,
   style = 'Regular'
 ): Promise<ArrayBuffer | null> {
+  // -------------------------
+  // WEB MODE (Render SAFE)
+  // -------------------------
   if (!IS_TAURI) {
     return loadFontCore(family, style)
   }
 
+  // -------------------------
+  // TAURI MODE ONLY
+  // -------------------------
   try {
-    const invoke = await getTauriInvoke()
-    if (!invoke) return loadFontCore(family, style)
+    const { invoke } = await import('@tauri-apps/api/core')
 
     const data = await invoke<number[]>('load_system_font', {
       family,
