@@ -13,13 +13,17 @@
   },
   "dependencies": {
     "@open-pencil/core": "latest",
+    "@open-pencil/vue": "latest",
     "@unhead/vue": "^1.8.9",
     "vue": "^3.4.0",
     "vue-router": "^4.3.0",
     "reka-ui": "latest",
     "lucide-vue-next": "latest",
     "path-browserify": "^1.0.1",
-    "@vueuse/core": "latest"
+    "@vueuse/core": "latest",
+    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.4",
