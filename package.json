@@ -48,13 +48,13 @@
     "@modelcontextprotocol/sdk": "latest",
     "nanoid": "latest",
     "@ai-sdk/anthropic": "latest",
-    "@ai-sdk/openai": "latest",
     "@ai-sdk/google": "latest",
     "@ai-sdk/mistral": "latest",
     "@openrouter/ai-sdk-provider": "latest",
     "prismjs": "latest",
     "vue-stream-markdown": "latest",
-    "markdown-it": "latest"
+    "markdown-it": "latest",
+    "terser": "latest"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.4",
