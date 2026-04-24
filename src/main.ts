@@ -9,11 +9,19 @@ import App from './App.vue'
 import router from './router'
 
 preloadFonts()
-const head = createHead()
-createApp(App).use(router).use(head).mount('#app')
 
+const app = createApp(App)
+const head = createHead()
+
+app.use(router).use(head).mount('#app')
+
+// safer PWA loading (won’t crash build if missing)
 if (!IS_TAURI) {
-  void import('virtual:pwa-register').then(({ registerSW }) => {
-    registerSW({ immediate: true })
-  })
+  import('virtual:pwa-register')
+    .then(({ registerSW }) => {
+      registerSW({ immediate: true })
+    })
+    .catch(() => {
+      console.warn('PWA not available')
+    })
 }
