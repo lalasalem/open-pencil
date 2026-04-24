@@ -1,22 +1,32 @@
-"scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "preview": "vite preview",
-  "start": "vite preview --host 0.0.0.0 --port 10000",
+{
+  "name": "open-pencil-app",
+  "private": true,
+  "version": "0.11.8",
+  "type": "module",
 
-  "lint": "oxlint -c oxlint.json --type-aware --type-check src/",
-  "format": "oxfmt --write src/",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite preview --host 0.0.0.0 --port 10000",
 
-  "check": "npm run lint && vue-tsc --noEmit -p tsconfig.json",
-  "check:vue": "vue-tsc --noEmit -p tsconfig.json",
+    "lint": "oxlint -c oxlint.json --type-aware --type-check src/",
+    "format": "oxfmt --write src/",
 
-  "test": "echo \"tests disabled for deployment\"",
+    "check": "npm run lint && vue-tsc --noEmit -p tsconfig.json",
+    "check:vue": "vue-tsc --noEmit -p tsconfig.json",
 
-  "open-pencil": "node packages/cli/src/index.ts",
+    "test": "echo \"tests disabled for deployment\"",
 
-  "docs:dev": "echo \"docs disabled for deployment\"",
-  "docs:build": "echo \"docs disabled for deployment\"",
-  "docs:preview": "echo \"docs disabled for deployment\"",
+    "open-pencil": "node packages/cli/src/index.ts",
 
-  "visual-compare": "node scripts/visual-compare.ts"
+    "docs:dev": "echo \"docs disabled for deployment\"",
+    "docs:build": "echo \"docs disabled for deployment\"",
+    "docs:preview": "echo \"docs disabled for deployment\"",
+
+    "visual-compare": "node scripts/visual-compare.ts"
+  },
+
+  "dependencies": {},
+  "devDependencies": {}
 }
