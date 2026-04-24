@@ -8,7 +8,20 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    {
+      name: 'fix-broken-worker-path',
+      resolveId(id) {
+        // If the builder looks for that missing .ts worker, 
+        // redirect it to our empty file so it doesn't crash.
+        if (id.includes('export-worker.ts')) {
+          return resolve(__dirname, 'empty-module.js');
+        }
+        return null;
+      }
+    }
+  ],
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
@@ -19,23 +32,16 @@ export default defineConfig({
       'path': 'path-browserify',
     },
   },
-  optimizeDeps: {
-    include: ['@unhead/vue', 'vue', 'vue-router']
-  },
   build: {
     outDir: 'dist',
     rollupOptions: {
-      // THIS IS THE CRITICAL FIX: 
-      // It tells the builder to stop looking for that missing .ts worker file
       external: [
-        /.*export-worker.*/,
-        /@open-pencil\/core\/dist\/io\/formats\/fig\/export-worker\.ts/
+        /.*export-worker.*/
       ],
     },
   },
   base: './',
   worker: {
-    format: 'es',
-    plugins: () => [vue()]
+    format: 'es'
   }
 });
