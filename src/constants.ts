@@ -1,6 +1,10 @@
+import type { Color } from '@open-pencil/core'
+
+/* SAFE FALLBACKS (prevents build crash on Render) */
+export const IS_TAURI = false
+export const IS_BROWSER = true
+
 export {
-  IS_BROWSER,
-  IS_TAURI,
   SELECTION_COLOR,
   COMPONENT_COLOR,
   SNAP_COLOR,
@@ -63,8 +67,6 @@ export {
   ZOOM_SCALE_MIN,
   ZOOM_SCALE_MAX
 } from '@open-pencil/core'
-
-import type { Color } from '@open-pencil/core'
 
 export const TRYSTERO_APP_ID = 'openpencil'
 export const ROOM_ID_LENGTH = 8
