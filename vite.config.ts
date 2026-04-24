@@ -21,20 +21,13 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    // MUST be esnext to allow the Yoga Layout await
-    target: 'esnext', 
-    minify: 'terser',
+    target: 'esnext', // Required for Yoga/Canvas engine
+    minify: 'esbuild', // Faster and sometimes safer for Chromebooks than Terser
     chunkSizeWarningLimit: 10000,
     rollupOptions: {
       external: ['trystero/mqtt', /^@tauri-apps\/.*/],
       output: {
-        globals: { 'trystero/mqtt': 'trystero' },
-        // Smaller chunks help restricted Chromebooks load without crashing
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
-        }
+        globals: { 'trystero/mqtt': 'trystero' }
       }
     }
   },
