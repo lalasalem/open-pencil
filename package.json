@@ -3,14 +3,20 @@
   "build": "vite build",
   "preview": "vite preview",
   "start": "vite preview --host 0.0.0.0 --port 10000",
+
   "lint": "oxlint -c oxlint.json --type-aware --type-check src/",
   "format": "oxfmt --write src/",
+
   "check": "npm run lint && vue-tsc --noEmit -p tsconfig.json",
   "check:vue": "vue-tsc --noEmit -p tsconfig.json",
+
   "test": "echo \"tests disabled for deployment\"",
+
   "open-pencil": "node packages/cli/src/index.ts",
+
   "docs:dev": "echo \"docs disabled for deployment\"",
   "docs:build": "echo \"docs disabled for deployment\"",
   "docs:preview": "echo \"docs disabled for deployment\"",
+
   "visual-compare": "node scripts/visual-compare.ts"
 }
