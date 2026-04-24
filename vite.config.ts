@@ -20,15 +20,13 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    // ES2015 is the most compatible setting for restricted browsers
-    target: 'es2015', 
-    minify: 'terser', // Terser is slower to build but easier for old browsers to run
+    target: 'esnext', 
+    minify: 'terser', 
     chunkSizeWarningLimit: 10000,
     rollupOptions: {
       external: ['trystero/mqtt', /^@tauri-apps\/.*/],
       output: {
         globals: { 'trystero/mqtt': 'trystero' },
-        // BREAKING EVERYTHING INTO TINY PIECES
         manualChunks(id) {
           if (id.includes('node_modules')) {
             return 'vendor';
