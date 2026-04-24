@@ -15,7 +15,7 @@ const head = createHead()
 
 app.use(router).use(head).mount('#app')
 
-// ✅ SAFE PWA (WILL NOT BREAK BUILD)
+// SAFE PWA (WILL NOT BREAK BUILD)
 if (!IS_TAURI && import.meta.env.PROD) {
   // only try in production AND only if plugin exists
   try {
