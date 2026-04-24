@@ -40,6 +40,8 @@
     "ai": "latest",
     "@ai-sdk/vue": "latest",
     "zod": "latest",
+    "valibot": "latest",
+    "@ai-sdk/valibot": "latest",
     "nanoid": "latest",
     "@ai-sdk/anthropic": "latest",
     "@ai-sdk/openai": "latest",
