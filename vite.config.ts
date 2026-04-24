@@ -25,12 +25,11 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     rollupOptions: {
-      // We are adding Tauri plugins here so the web build ignores desktop-only code
+      // BROAD WILDCARD: This ignores every desktop-only Tauri plugin automatically
       external: [
         /.*export-worker.*/,
         /.*fig-parse-worker.*/,
-        /^@tauri-apps\/api/,
-        /^@tauri-apps\/plugin-dialog/
+        /^@tauri-apps\/.*/
       ],
     },
   },
