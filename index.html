@@ -8,56 +8,44 @@
     <script src="https://unpkg.com/trystero@0.23.0/dist/trystero-mqtt.min.js"></script>
 
     <script>
-      // FIX: Handle restricted environment locks
       window.global = window;
       window.process = { env: {}, browser: true };
       window.__TAURI__ = { invoke: () => Promise.resolve(), convertFileSrc: (s) => s };
 
-      // AUTO-RESET: If the page is blank for 5 seconds after loading,
-      // it might be a database lock. This script tries to jumpstart it.
-      window.onerror = function() {
-        console.log("App crashed. Attempting recovery...");
-        localStorage.clear(); // Clears corrupt settings
-      };
+      // CHROMEBOOK RECOVERY
+      // If the page stays blank for 6 seconds, try to clear potential locks
+      setTimeout(() => {
+        if (!document.querySelector('#app').innerHTML) {
+          console.warn("Detected blank screen, attempting emergency refresh...");
+          localStorage.removeItem('open-pencil-storage'); // Clears potentially heavy cached data
+        }
+      }, 6000);
     </script>
 
     <style>
-      body { margin: 0; background: #1e1e1e; color: white; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
-      #app:empty ~ #fallback-loader { display: flex; }
-      #fallback-loader {
+      body { margin: 0; background: #1e1e1e; color: white; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; }
+      #app:empty + #loading-screen { display: flex; }
+      #loading-screen {
         display: none;
         flex-direction: column;
         align-items: center;
       }
-      .dot-loader {
-        display: flex;
-        gap: 8px;
-      }
-      .dot {
-        width: 12px;
-        height: 12px;
-        background: #3b82f6;
+      .spinner {
+        width: 30px; height: 30px;
+        border: 2px solid rgba(255,255,255,0.1);
+        border-top: 2px solid #3b82f6;
         border-radius: 50%;
-        animation: bounce 1.4s infinite ease-in-out both;
+        animation: spin 0.8s linear infinite;
       }
-      .dot:nth-child(1) { animation-delay: -0.32s; }
-      .dot:nth-child(2) { animation-delay: -0.16s; }
-      @keyframes bounce {
-        0%, 80%, 100% { transform: scale(0); }
-        40% { transform: scale(1.0); }
-      }
+      @keyframes spin { to { transform: rotate(360deg); } }
     </style>
   </head>
   <body>
     <div id="app"></div>
     
-    <div id="fallback-loader">
-      <div class="dot-loader">
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-      </div>
-      <p style="margin-top: 20px; font-size: 12px; opacity: 0.5;">WAKING UP ENGINE...</p>
+    <div id="loading-screen">
+      <div class="spinner"></div>
+      <p style="margin-top: 15px; font-size: 11px; letter-spacing: 1px; opacity: 0.4;">SYNCING ENGINE...</p>
     </div>
 
     <script type="module" src="/src/main.ts"></script>
