@@ -25,7 +25,10 @@
     "autoprefixer": "^10.4.0",
     "postcss": "^8.4.0",
     "@atlaskit/pragmatic-drag-and-drop": "latest",
-    "@atlaskit/pragmatic-drag-and-drop-hitbox": "latest"
+    "@atlaskit/pragmatic-drag-and-drop-hitbox": "latest",
+    "@tanstack/vue-table": "latest",
+    "clsx": "latest",
+    "tailwind-merge": "latest"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.4",
