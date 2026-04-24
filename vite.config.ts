@@ -20,18 +20,22 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['@unhead/vue']
+    include: ['@unhead/vue', 'vue', 'vue-router']
   },
   build: {
     outDir: 'dist',
     rollupOptions: {
+      // THIS IS THE CRITICAL FIX: 
+      // It tells the builder to stop looking for that missing .ts worker file
       external: [
-        /.*export-worker\.ts/ 
+        /.*export-worker.*/,
+        /@open-pencil\/core\/dist\/io\/formats\/fig\/export-worker\.ts/
       ],
     },
   },
   base: './',
   worker: {
     format: 'es',
+    plugins: () => [vue()]
   }
 });
