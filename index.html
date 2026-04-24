@@ -12,6 +12,17 @@
     
     <script src="https://unpkg.com/trystero@0.23.0/dist/trystero-mqtt.min.js"></script>
 
+    <script>
+      // FIX: Mock Tauri so the app doesn't hang waiting for desktop
+      window.__TAURI__ = {
+        invoke: () => Promise.resolve(),
+        convertFileSrc: (src) => src,
+        updater: { checkUpdate: () => Promise.resolve({ shouldUpdate: false }) }
+      };
+      // FIX: Global shim for older libraries
+      window.global = window;
+    </script>
+
     <style>
       body { margin: 0; background: #1e1e1e; }
       #loader {
