@@ -38,6 +38,7 @@
     "motion-v": "latest",
     "framer-motion": "latest",
     "ai": "latest",
+    "@ai-sdk/vue": "latest",
     "zod": "latest",
     "nanoid": "latest",
     "@ai-sdk/anthropic": "latest",
