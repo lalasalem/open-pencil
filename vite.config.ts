@@ -19,8 +19,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
-      // Point to the local file we created in the build command
-      'trystero/mqtt': resolve(__dirname, './trystero-fix.js'),
       'node:fs/promises': resolve(__dirname, 'empty-module.js'),
       'node:url': resolve(__dirname, 'empty-module.js'),
       'fs': resolve(__dirname, 'empty-module.js'),
@@ -31,11 +29,18 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     rollupOptions: {
+      // THIS IS THE FIX: We tell Vite "Don't look for these locally, I'll handle it"
       external: [
+        'trystero/mqtt',
         /.*export-worker.*/,
         /.*fig-parse-worker.*/,
         /^@tauri-apps\/.*/
       ],
+      output: {
+        globals: {
+          'trystero/mqtt': 'trystero'
+        }
+      }
     },
   },
   base: './',
