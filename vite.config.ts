@@ -1,30 +1,35 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue'; // Assuming it's a Vue app based on the repo name
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [vue()],
-
   resolve: {
     alias: {
-      '@': '/src',
-
-      // existing fixes
-      '@tauri-apps/api/core': '/src/shims/tauri.ts',
-      'reka-ui': '/src/shims/reka-ui.ts',
-      'canvaskit-wasm': '/src/shims/canvaskit.ts',
-
-      // 🚨 CRITICAL FIX
-      '@open-pencil/core/dist/io/formats/fig/export-worker.ts':
-        '/src/shims/export-worker.ts'
-    }
+      // This fixes the "node:fs/promises" error by telling Vite 
+      // to ignore Node-only modules in the browser
+      'node:fs/promises': 'empty-module',
+      'node:url': 'empty-module',
+      'fs': 'empty-module',
+      'path': 'path-browserify',
+    },
   },
-
   build: {
     rollupOptions: {
+      // This helps Rollup ignore the missing .ts worker file 
+      // if it's being incorrectly referenced by a dependency
       external: [
-        '@tauri-apps/api/core',
-        'virtual:pwa-register'
-      ]
-    }
+        /.*export-worker\.ts/ 
+      ],
+      output: {
+        manualChunks: {
+          vendor: ['vue', '@open-pencil/core'],
+        },
+      },
+    },
+  },
+  // This ensures that workers are bundled correctly as pointers
+  worker: {
+    format: 'es',
   }
-})
+});
