@@ -10,19 +10,37 @@ interface FontFamily {
   styles: string[]
 }
 
-// -------------------------
-// WEB SAFE MODE (Render)
-// -------------------------
-
+// cache for Tauri fonts
 let cachedFonts: FontFamily[] = []
 
-async function getTauriFonts(): Promise<FontFamily[]> {
-  // 🚨 NEVER import Tauri on web build
-  if (!IS_TAURI) return []
+// -------------------------
+// SAFE DYNAMIC LOADER
+// -------------------------
+async function safeTauriInvoke(): Promise<any | null> {
+  if (!IS_TAURI) return null
 
   try {
-    const { invoke } = await import('@tauri-apps/api/core')
-    return await invoke<FontFamily[]>('list_system_fonts')
+    // IMPORTANT: string-based import so Vite cannot statically analyze it
+    const mod = await new Function(
+      "return import('@tauri-apps/api/core')"
+    )()
+
+    return mod.invoke
+  } catch {
+    return null
+  }
+}
+
+async function getTauriFonts(): Promise<FontFamily[]> {
+  if (!IS_TAURI) return []
+
+  const invoke = await safeTauriInvoke()
+  if (!invoke) return []
+
+  try {
+    const fonts = await invoke<FontFamily[]>('list_system_fonts')
+    cachedFonts = fonts
+    return fonts
   } catch {
     return []
   }
@@ -52,8 +70,8 @@ function registerFonts(fonts: FontFamily[]): void {
 
 export async function listFamilies(): Promise<string[]> {
   if (!IS_TAURI) {
-    const { listFamilies: coreList } = await import('@open-pencil/core')
-    return coreList()
+    const { listFamilies } = await import('@open-pencil/core')
+    return listFamilies()
   }
 
   const fonts = await getTauriFonts()
@@ -79,9 +97,10 @@ export async function loadFont(
   // -------------------------
   // TAURI MODE ONLY
   // -------------------------
-  try {
-    const { invoke } = await import('@tauri-apps/api/core')
+  const invoke = await safeTauriInvoke()
+  if (!invoke) return loadFontCore(family, style)
 
+  try {
     const data = await invoke<number[]>('load_system_font', {
       family,
       style
@@ -92,7 +111,9 @@ export async function loadFont(
     markFontLoaded(family, style, buffer)
 
     const weight = styleToWeight(style)
-    const italic = style.toLowerCase().includes('italic') ? 'italic' : 'normal'
+    const italic = style.toLowerCase().includes('italic')
+      ? 'italic'
+      : 'normal'
 
     const face = new FontFace(family, buffer, {
       weight: String(weight),
