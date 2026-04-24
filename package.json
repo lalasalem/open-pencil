@@ -23,7 +23,9 @@
     "@vueuse/core": "latest",
     "tailwindcss": "^3.4.0",
     "autoprefixer": "^10.4.0",
-    "postcss": "^8.4.0"
+    "postcss": "^8.4.0",
+    "@atlaskit/pragmatic-drag-and-drop": "latest",
+    "@atlaskit/pragmatic-drag-and-drop-hitbox": "latest"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.4",
