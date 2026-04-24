@@ -23,7 +23,6 @@ export default defineConfig({
     outDir: 'dist',
     rollupOptions: {
       external: [
-        // Keeping this as a safety net
         /.*export-worker.*/
       ],
     },
