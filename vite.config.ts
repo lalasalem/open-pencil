@@ -16,6 +16,11 @@ export default defineConfig({
       autoInstall: true
     })
   ],
+  // FIX: Prevents "process is not defined" errors in browser
+  define: {
+    'process.env': {},
+    'global': 'window'
+  },
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
@@ -26,14 +31,8 @@ export default defineConfig({
       'path': 'path-browserify',
     },
   },
-  optimizeDeps: {
-    // This ensures dependencies are also treated as modern JS
-    target: 'esnext',
-    include: ['@unhead/vue', 'vue', 'vue-router']
-  },
   build: {
     outDir: 'dist',
-    // THIS IS THE KEY FIX: Target modern browsers to allow top-level await
     target: 'esnext',
     rollupOptions: {
       external: [
