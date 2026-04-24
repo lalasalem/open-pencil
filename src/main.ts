@@ -15,13 +15,12 @@ const head = createHead()
 
 app.use(router).use(head).mount('#app')
 
-// safer PWA loading (won’t crash build if missing)
+// safer PWA loading (Render-safe, no build crash if missing)
 if (!IS_TAURI) {
-  import('virtual:pwa-register')
-    .then(({ registerSW }) => {
-      registerSW({ immediate: true })
-    })
-    .catch(() => {
-      console.warn('PWA not available')
-    })
+  try {
+    const mod = await import('virtual:pwa-register')
+    mod.registerSW?.({ immediate: true })
+  } catch {
+    console.warn('PWA not available')
+  }
 }
