@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node -e \"const fs=require('fs');['node_modules/@open-pencil/core/dist/io/formats/fig/export.js','node_modules/@open-pencil/core/dist/io/formats/fig/read.js'].forEach(f=>{try{fs.writeFileSync(f,fs.readFileSync(f,'utf8').replace(/const worker = new Worker.*/g,'const worker = { onmessage: null, postMessage: () => {} };'))}catch(e){}})\" && npx vite build --config vite.web.config.ts",
     "preview": "vite preview"
   },
   "dependencies": {
