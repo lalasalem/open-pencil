@@ -2,12 +2,22 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import Icons from 'unplugin-icons/vite'
 import { resolve } from 'path'
+import tailwindcss from 'tailwindcss'
+import autoprefixer from 'autoprefixer'
 
 export default defineConfig({
   plugins: [
     vue(),
     Icons({ compiler: 'vue3' }),
   ],
+  css: {
+    postcss: {
+      plugins: [
+        tailwindcss(),
+        autoprefixer(),
+      ],
+    },
+  },
   resolve: {
     alias: [
       { find: 'path', replacement: 'path-browserify' },
