@@ -19,6 +19,7 @@ export default defineConfig({
       { find: /^@tauri-apps\/plugin-updater(\/.*)?$/, replacement: resolve(__dirname, 'src/shims/empty.ts') },
       { find: /^@tauri-apps\/plugin-clipboard-manager(\/.*)?$/, replacement: resolve(__dirname, 'src/shims/empty.ts') },
       { find: /^@tauri-apps\/plugin-notification(\/.*)?$/, replacement: resolve(__dirname, 'src/shims/empty.ts') },
+      { find: /^@tauri-apps\/plugin-opener(\/.*)?$/, replacement: resolve(__dirname, 'src/shims/empty.ts') },
       { find: /^@tauri-apps\/api(\/.*)?$/, replacement: resolve(__dirname, 'src/shims/empty.ts') },
     ],
   },
