@@ -4,26 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>OpenPencil</title>
-    
     <script src="https://unpkg.com/trystero@0.23.0/dist/trystero-mqtt.min.js"></script>
-
     <script>
       window.global = window;
       window.process = { env: { NODE_ENV: 'production' } };
       window.__TAURI__ = { invoke: () => Promise.resolve(), convertFileSrc: (s) => s };
-
-      // If the app is still showing "Loading..." after 7 seconds, 
-      // something is blocked. This script tries to force-start.
-      setTimeout(() => {
-        const loader = document.getElementById('loading-screen');
-        if (loader && loader.style.display !== 'none') {
-          console.warn("Manual override triggered...");
-          loader.style.background = "rgba(0,0,0,0.5)";
-          loader.innerHTML = "<div style='color:white; font-size:10px;'>RETRYING...</div>";
-        }
-      }, 7000);
     </script>
-
     <style>
       body { margin: 0; background: #1e1e1e; height: 100vh; width: 100vw; overflow: hidden; }
       #loading-screen {
@@ -31,14 +17,18 @@
         display: flex; align-items: center; justify-content: center;
         background: #1e1e1e; z-index: 9999;
         color: #3b82f6; font-family: sans-serif;
+        flex-direction: column; gap: 16px;
       }
+      .loader-spinner {
+        width: 40px; height: 40px;
+        border: 3px solid rgba(59,130,246,0.2);
+        border-top-color: #3b82f6;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
     </style>
   </head>
   <body>
     <div id="app"></div>
     <div id="loading-screen">
-      <div class="loader-text">Loading...</div>
-    </div>
-    <script src="/src/main.ts"></script>
-  </body>
-</html>
