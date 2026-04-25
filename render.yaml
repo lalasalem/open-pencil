@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: open-pencil
+    runtime: node
+    buildCommand: npm install --legacy-peer-deps && sed -i 's/const worker = new Worker.*/const worker = { onmessage: null, postMessage: () => {} };/g' node_modules/@open-pencil/core/dist/io/formats/fig/export.js && sed -i 's/const worker = new Worker.*/const worker = { onmessage: null, postMessage: () => {} };/g' node_modules/@open-pencil/core/dist/io/formats/fig/read.js && npm run build
+    staticPublishPath: dist
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
