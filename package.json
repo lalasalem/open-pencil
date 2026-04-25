@@ -31,7 +31,7 @@
     "tailwind-merge": "latest",
     "tailwind-variants": "latest",
     "radix-vue": "latest",
-    "trystero": "latest",
+    "trystero": "0.20.0",
     "yjs": "latest",
     "y-indexeddb": "latest",
     "y-protocols": "latest",
